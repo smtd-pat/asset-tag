@@ -1,0 +1,3 @@
+Also install:
+- ghostscript
+- wkhtmltopdf
