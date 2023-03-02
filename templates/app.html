@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700&family=Nunito&display=swap" rel="stylesheet">
+    <title>PAT Asset Tag Generator</title>
+    <style type="text/css">
+        html, body {
+            font-family: Nunito, sans-serif;
+            background: #131719;
+            color:#fff;
+        }
+
+        header {
+            height: 45px;
+            display: flex;
+            margin: 16px 8px;
+        }
+
+        .logo {
+            fill:#fff;
+        }
+
+        .logo svg {
+            height: 45px;
+        }
+
+        .title {
+            font-family: Manrope, sans-serif;
+            font-size: 18px;
+            text-align: right;
+            line-height: 45px;
+            flex: 1 0 auto;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            grid-template-rows: 1fr;
+            grid-column-gap: 8px;
+            grid-row-gap: 8px;
+        }
+
+        .content div {
+            background: #171D1F;
+            border: 1px solid #24373D;
+            border-radius: 5px;
+            padding: 16px;
+        }
+
+
+
+        .list table {
+            width: 100%;
+        }
+
+        .list table tr td:last-child {
+            font-weight: bold;
+            font-family: Manrope, sans-serif;
+            text-align: right;
+        }
+
+        .list table tr td:last-child a {
+            color: #C86464;
+            text-decoration: none;
+        }
+
+        .list table tr td a {
+            color: white;
+        }
+
+        .list table thead {
+            font-family: Manrope, sans-serif;
+            font-weight: bold;
+        }
+
+        .list table thead th:last-child {
+            width: 8px;
+        }
+
+        input, .submit {
+            background: #1E292E;
+            border: 1px solid #2F535F;
+            color: #fff;
+            padding: 8px;
+            font-size: 24px;
+            margin: 8px;
+        }
+
+        .submit:hover {
+            background: #2F535F;
+        }
+
+        .submit:active {
+            background: #171D1F;
+        }
+
+        .copy {
+            background: #1E292E;
+            border: 1px solid #2F535F;
+            color: #fff;
+        }
+
+        .copy:hover {
+            background: #2F535F;
+        }
+
+        .copy:active {
+            background: #171D1F;
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            font-family: Manrope, sans-serif;
+            margin: 8px;
+        }
+
+        .flashes {
+            margin: 0;
+            padding: 0;
+        }
+
+        .flashes li {
+            list-style: none;
+            background: #1f1717;
+            border: 1px solid #3d2424;
+            border-radius: 5px;
+            padding: 16px;
+            color: #C86464;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <svg width="100%" height="100%" viewBox="0 0 834 63" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                <g transform="matrix(1,0,0,1,-33,-37)">
+                    <g transform="matrix(1.03108,0,0,1.03108,-6.99513,-245.495)">
+                        <g transform="matrix(0.555752,0,0,0.555752,-1.38006,-53.4181)">
+                            <path d="M72.372,681.318L120.414,681.318L120.414,655.948L110.178,655.948L110.178,630.279L135.864,664.958L161.978,630.235L161.978,655.732L151.716,655.732L151.716,681.318L199.355,681.318L199.355,655.842L189.771,655.842L189.771,616.12L199.355,616.12L199.355,590.537L161.965,590.537L135.864,626.099L110.082,590.537L72.372,590.537L72.372,615.936L82.371,615.936L82.371,655.732L72.372,655.732L72.372,681.318Z"/>
+                        </g>
+                        <g transform="matrix(0.539765,0,0,0.539765,-159.794,196.3)">
+                            <text x="543.914px" y="230.929px" style="font-family:'Manrope-ExtraBold', 'Manrope';font-weight:800;font-size:96.178px;">P<tspan x="605.468px " y="230.929px ">e</tspan>rf<tspan x="738.771px " y="230.929px ">o</tspan>rming Arts T<tspan x="1366.52px " y="230.929px ">e</tspan>chn<tspan x="1602.45px " y="230.929px ">o</tspan>logy</text>
+                        </g>
+                    </g>
+                </g>
+            </svg>
+        </div>
+        <div class="title">Asset Tag Generator</div>
+    </header>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <div class="content">
+        <div class="form">
+            <form method="post">
+                <label for="item_name">Item Name</label>
+                <input type="text" name="item_name" id="item_name" value="{{ request.form['item_name'] }}">
+                <label for="barcode">Barcode</label>
+                <input type="text" name="barcode" id="barcode" placeholder="(optional)" value="{{ request.form['barcode'] }}">
+                <button type="submit" class="submit">Create</button>
+            </form>
+        </div>
+
+        <div class="list">
+            <table>
+                <tbody>
+                <thead>
+                    <th>Item</th>
+                    <th>Barcode</th>
+                    <th></th>
+                </thead>
+                {% for item in items %}
+                    <tr>
+                        <td><a href="{{ url_for('tag', barcode=item[0]) }}">{{ item[1] }}</a></td>
+                        <td><a href="{{ url_for('tag', barcode=item[0]) }}">{{ item[0] }}</a> <button class="copy" onclick="location.href='{{ url_for('download', barcode=item[0]) }}';">Download</button> <button class="copy" onclick="navigator.clipboard.writeText('{{ item[0] }}')">Copy</button></td>
+                        <td><a href="{{ url_for('delete', barcode=item[0]) }}">X</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
