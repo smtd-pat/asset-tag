@@ -10,13 +10,14 @@ from jinja2 import Environment, select_autoescape, FileSystemLoader
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'asdf'
 
+pdfkit_config = pdfkit.configuration(wkhtmltopdf='/opt/local/bin/wkhtmltopdf')
 
 @app.route('/', methods=['POST', 'GET'])
 def application():
     barcodes = [bc.split(' ')[0] for bc in os.listdir(os.path.dirname(os.path.realpath(__file__))) if
                 bc.endswith('.pdf')]
     names = [' '.join(bc.split(' ')[1:]).replace('.pdf', '') for bc in os.listdir(os.path.dirname(os.path.realpath(__file__))) if bc.endswith('.pdf')]
-    items = reversed(sorted(list(zip(barcodes, names))))
+    items = list(reversed(sorted(list(zip(barcodes, names)))))
 
     if request.method == 'POST':
         env = Environment(
@@ -58,7 +59,6 @@ def application():
         f.write(render)
         f.seek(0)
 
-        config = pdfkit.configuration(wkhtmltopdf='/opt/local/bin/wkhtmltopdf')
         pdfkit.from_file(f, barcode_text + ' ' + name + '.pdf', options={
                 'page-height': '2in',
                 'page-width': '3in',
@@ -68,8 +68,10 @@ def application():
                 'margin-left': '0',
                 'encoding': "UTF-8",
                 'no-outline': None,
-                'enable-local-file-access': None
-            }, configuration=config)
+                'enable-local-file-access': None,
+            }, configuration=pdfkit_config)
+
+        items.insert(0, (barcode_text, name))
 
         flash(f'{barcode_text} {name} created')
 
